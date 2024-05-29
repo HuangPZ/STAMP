@@ -8,10 +8,10 @@ Requested Badge: **Reproducible**
 
 ## Description
 
-A maliciously secure framework for efficient 3-party trusted hardware aided protocols for neural networks inference. This work builds off [Falcon](https://github.com/snwagh/falcon-public) and other prior works. This frame work does the inter-party communication and CPU computation that happens during the protocol, and generate the LTH bandwidth usage numbers for simulation of LTH overhead. 
+A maliciously secure framework for efficient 3-party trusted hardware aided protocols for neural networks inference. This work builds off [Falcon](https://github.com/snwagh/falcon-public) and other prior works. This frame work implements the inter-party communication and CPU/GPU computation that happens during the protocol, and generate the LTH-CPU communication numbers for the simulation of the LTH overhead. 
 
 ### Accessibility
-The code is also publicly available in the github repo https://github.com/HuangPZ/STAMP_public.
+The code is publicly available in the github repo https://github.com/HuangPZ/STAMP_public.
 
 ### Estimated Time and Storage Consumption
 Depends on the internet setting the time may vary, but should be withing an hour for all models with a proper GPU support. For CPU, do not run on VGG16 and ResNet18 since they will be not finishing within hours and are not meaningful for the paper's comparison.
