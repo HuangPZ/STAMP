@@ -27,9 +27,15 @@ extern int functype;
 extern int MatMul_Com,ReLU_Com,MP_Com,MP_ReLU_Com,Div_Com,BN_Com,PP_Com,SS_Com;
 extern int MatMul_rounds,ReLU_rounds,MP_rounds,Div_rounds,BN_rounds,PP_rounds,SS_rounds;
 extern int MatMul_time,ReLU_time,MP_time,MP_ReLU_time,Div_time,BN_time;
-
+extern int total_clock_time;
 extern CommunicationObject commObject;
-
+// float LAN_ping = 0.0002;
+// float LAN_Com = 625000000;
+// float WAN_ping = 0.07;
+// float WAN_Com = 40000000;
+extern float LAN_ping,LAN_Com,WAN_ping,WAN_Com;
+float LTH_Chip_Com = 15000000;
+float LTH_SoC_Com = 1000000000;
 int main(int argc, char** argv)
 {	
 	sendtime = 0;
@@ -38,7 +44,8 @@ int main(int argc, char** argv)
 	RSSVectorMyType x(5);
 
 	
-	string Network_l[9] = {"SecureML", "Sarda", "MiniONN", "LeNet", "AlexNet", "VGG16",  "Trans", "ResNet", "Word2Vec"};
+	string Network_l[9] = {"SecureML", "Sarda", "MiniONN", "LeNet", "AlexNet", "VGG16",  "Trans", "ResNet", "Word2Vec"}; 
+	// change here and the loop to switch the networks you want to run.
 	string Dataset_l[2]={"MNIST", "CIFAR10", };//"ImageNet"};
 	string network, dataset, security;
 	security = "Semi-honest"; // "Semi-honest" or "Malicious"
@@ -49,6 +56,7 @@ int main(int argc, char** argv)
 			network = Network_l[networki];
 			dataset = Dataset_l[dataseti];
 
+			
 			if((network=="SecureML"||network=="Sarda"||network=="MiniONN"||network=="LeNet"
 			||network=="New"||network=="Trans"||network=="ResNet"||network=="Word2Vec")&&(dataset!="MNIST")){
 				continue;
@@ -88,7 +96,7 @@ int main(int argc, char** argv)
 			// }
 			selectNetwork(network, dataset, security, config);
 			config->checkNetwork();
-				cout<<"SSSSS";
+				// cout<<"SSSSS";
 			NeuralNetwork* net = new NeuralNetwork(config);
 		/****************************** AES SETUP and SYNC ******************************/ 
 			aes_indep = new AESObject(argv[3]);
@@ -170,6 +178,8 @@ int main(int argc, char** argv)
 			myfile.open ((filename1).c_str(), ios::app);
 			myfile << endl;
 			myfile.close();	
+			float WAN_comm_time = (float)commObject.getSent()/WAN_Com + (float)commObject.getRoundsSent()*WAN_ping;
+			float LAN_comm_time = (float)commObject.getSent()/LAN_Com + (float)commObject.getRoundsSent()*LAN_ping;
 			end_m(network,filename1);
 			cout << "ChipClockTime: " << chip.ClockTime <<endl;
 			
@@ -241,12 +251,32 @@ int main(int argc, char** argv)
 				myfile << "Max_Comparetimes: " <<chip.Max_Comparetimes << endl;
 				myfile << "SoftmaxTimes: " <<chip.SoftmaxTimes << endl;
 				myfile << "LayerNormTimes: " <<chip.LayerNormTimes << endl;
-				chip.Reset();
 				
+				
+				cout << "WAN comm time: " 
+					<< WAN_comm_time << endl;
+				cout << "LAN comm time: " 
+					<< LAN_comm_time << endl;
+				float LTH_Chip_comm_time = ((float)(chip.TransInBits)+(float)(chip.TransOutBits))/LTH_Chip_Com;
+				float LTH_SoC_comm_time = ((float)(chip.TransInBits)+(float)(chip.TransOutBits))/LTH_SoC_Com;
+				cout<< "LTH_Chip_comm_time: " << LTH_Chip_comm_time << endl;
+				cout<< "LTH_SoC_comm_time: " << LTH_SoC_comm_time << endl;
+				cout<< ">>>>>>>>>>>>> TIME ESTIMATION OF "<<network<<"<<<<<<<<<<<<<<<"<<endl;
+				cout << "----------------------------------------------" << endl; 	
+				cout<<"Total LTH_Chip runtime of the system: "<<total_clock_time+LTH_Chip_comm_time<<endl;
+				cout<<"Total LTH_SoC runtime of the system: "<<total_clock_time+LTH_SoC_comm_time<<endl;
+				cout << "----------------------------------------------" << endl;
+				cout<< "if you run locally, here is an estimated runtime with different network condition." <<endl;
+				cout<< "The inter party network communication is slower in real experiments." <<endl;
+				cout<< "WAN LTH_Chip: " << WAN_comm_time + total_clock_time + LTH_Chip_comm_time <<endl;
+				cout<< "WAN LTH_SoC: " << WAN_comm_time + total_clock_time + LTH_SoC_comm_time <<endl;
+				cout<< "LAN LTH_Chip: " << LAN_comm_time + total_clock_time + LTH_Chip_comm_time <<endl;
+				cout<< "LAN LTH_SoC: " << LAN_comm_time + total_clock_time + LTH_SoC_comm_time <<endl;
+				cout<< ">>>>>>>>>>>>> END OF ESTIMATION <<<<<<<<<<<<<<<"<<endl;
 			}
 
 
-
+			chip.Reset();
 			myfile.close();
 
 			sendtime = 0;

@@ -848,7 +848,7 @@ void Chip::ChipMaxReLU(const vector<myType>& x, const vector<myType>& bias, RSSV
                           const vector<myType>&tempgamma, const vector<myType>&tempbeta){
 
     // assert(ReLU && "Must have relu");
-    cout<<maxpool<<ReLU<<BN<<endl;
+    // cout<<maxpool<<ReLU<<BN<<endl;
     int cbegin=clock();
     size_t size = B*tempSize*Dout;
     size_t rows = B;

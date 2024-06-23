@@ -25,7 +25,7 @@ bool alreadyMeasuringRounds = false;
 extern smallType additionModPrime[PRIME_NUMBER][PRIME_NUMBER];
 extern smallType subtractModPrime[PRIME_NUMBER][PRIME_NUMBER];
 extern smallType multiplicationModPrime[PRIME_NUMBER][PRIME_NUMBER];
-
+int total_clock_time;
 RSSVectorMyType trainData, testData;
 RSSVectorMyType trainLabels, testLabels;
 size_t trainDataBatchCounter = 0;
@@ -1807,6 +1807,7 @@ void end_time(string str, string fn)
 
 	clock_gettime(CLOCK_REALTIME, &requestEnd);
 	cout << "----------------------------------------------" << endl;
+	total_clock_time = diff(requestStart, requestEnd);
 	cout << "Wall Clock time for " << str << ": " << diff(requestStart, requestEnd) << " sec\n";
 	cout << "CPU time for " << str << ": " << (double)(clock() - tStart)/CLOCKS_PER_SEC << " sec\n";
 	cout << "----------------------------------------------" << endl;	

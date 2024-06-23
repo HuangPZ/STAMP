@@ -20,7 +20,7 @@ CNNLayer::CNNLayer(CNNConfig* conf, int _layerNum)
 // 	    (((conf->imageWidth - conf->filterSize + 2*conf->padding)/conf->stride) + 1) * 
 // 	    (((conf->imageHeight - conf->filterSize + 2*conf->padding)/conf->stride) + 1)),
 {
-	cout<<conf->stride_M<<" "<<conf->stride<<" "<<conf->maxpool<<" "<<endl;
+	// cout<<conf->stride_M<<" "<<conf->stride<<" "<<conf->maxpool<<" "<<endl;
 	if(conf->maxpool){
 		size_t neww = ((conf->imageWidth - conf->filterSize + 2*conf->padding)/conf->stride);
 		size_t newh = ((conf->imageHeight - conf->filterSize + 2*conf->padding)/conf->stride);
