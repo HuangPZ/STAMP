@@ -94,13 +94,15 @@ The LTH part of the STAMP is tested and estimated on Arduino Due which publicly 
 
 The main overhead of the LTH-Chip, which is demonstrated in figure 4 of the paper, comes from the CPU-LTH communication time. Even without Arduino Due, the experiments using the provided code should result in close enough data adding up the execution time and estimated communication overhead using the bandwidth assumed in the paper.
 
-To cap the internet connection speed and add artificial round latency for a local distributed machine set, the following command can be used to add, change, and delete policy (use ifconfig to determine the names of the network interfaces that connects the local machines).
+To cap the internet connection speed and add artificial round latency for a local distributed machine set, the following command can be used to add, change, and delete the policy (use ifconfig to determine the names of the network interfaces that connect the local machines).
 
 ```
-sudo tc qdisc add dev <INTERFACE> root netem delay 35ms rate 500mbit
-sudo tc qdisc change dev <INTERFACE> root netem delay 35ms rate 500mbit
-sudo tc qdisc del dev <INTERFACE> root netem delay 35ms rate 500mbit
+sudo tc qdisc add dev <INTERFACE> root netem delay 35ms rate 320mbit
+sudo tc qdisc change dev <INTERFACE> root netem delay 35ms rate 320mbit
+sudo tc qdisc del dev <INTERFACE> root netem delay 35ms rate 320mbit
 ```
+
+We suggest testing the actual transmission speed between machines and adjust the rate/delay accordingly.
 
 ## License
 
