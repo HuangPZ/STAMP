@@ -1,6 +1,6 @@
 # Artifact Appendix
 
-Paper title: **Efficient Privacy-Preserving Machine Learning with Lightweight Trusted Hardware**
+Paper title: [**Efficient Privacy-Preserving Machine Learning with Lightweight Trusted Hardware**](https://arxiv.org/pdf/2210.10133)
 
 Artifacts HotCRP Id: **#13**
 
